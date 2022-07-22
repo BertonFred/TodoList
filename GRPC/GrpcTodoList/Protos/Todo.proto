@@ -1,0 +1,91 @@
+// =====================================================================
+// Fichier de définition des interfaces du service GRPC 
+// Ce fichier est recopié automatiquement pour l'implémentation client
+// 1) sur le pre-build du client
+//
+// Pour le serveur 
+//  ce fichier doit être configurer avec :
+//  * un build action : Protobuf compile
+//  * gRPC stub class : Server Only
+// Pour le client
+//  ce fichier doit être configurer avec :
+//  * un build action : Protobuf compile
+//  * gRPC stub class : Client Only
+// =====================================================================
+
+syntax = "proto3";
+
+option csharp_namespace = "GrpcTodoList";
+
+package todo;
+
+// Définition du service de gestion des todo listes
+// La todo liste est composée de todo item
+service TodoList 
+{
+  // Creation d'une item de todo
+  rpc CreateTodoItem (CreateTodoItemRequest) returns (TodoItem);
+  // Lecture d'un todo item
+  rpc GetTodoItem (GetTodoItemRequest) returns (TodoItem);
+  // Demande la liste des todo items
+  rpc GetTodoList (GetTodoListRequest) returns (GetTodoListReply);
+}
+
+//
+// Définition d'un item
+// 
+message TodoItem
+{
+  int32 id = 1;
+  string Titre = 2;
+  string Description = 3;
+}
+
+// Service : TodoList
+// Methode : CreateTodoItem 
+// Type    : REQUEST
+// requete de creation d'un todo item
+message CreateTodoItemRequest 
+{
+  string Titre = 1;
+  string Description = 2;
+}
+
+// Service : TodoList
+// Methode : CreateTodoItem
+// Type    : REPLY
+// Réponse a la creation d'une todo list
+message CreateTodoItemReply 
+{
+  int32 id = 1;
+  string Titre = 2;
+}
+
+// Service : TodoList
+// Methode : GetTodoItem 
+// Type    : REQUEST
+// requete de lecture d'un todo item
+message GetTodoItemRequest 
+{
+  int32 id = 1;
+}
+
+// Service : TodoList
+// Methode : GetTodoList 
+// Type    : REQUEST
+// Requete de demande de la liste des todo items
+message GetTodoListRequest 
+{
+  string SeachText = 1;
+}
+
+// Service : TodoList
+// Methode : GetTodoList 
+// Type    : REPLY
+// Réponse a la demande de liste des todo items
+// $$$ TODO comment faire une liste
+message GetTodoListReply 
+{
+	repeated TodoItem Items= 1;
+}
+

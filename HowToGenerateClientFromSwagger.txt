@@ -1,0 +1,4 @@
+https://editor.swagger.io/
+le générateur online pour produire du code client.
+faire une test de generation de code
+pour une console
