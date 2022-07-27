@@ -9,20 +9,19 @@ namespace wsRestTodoList.Controllers
     public class TodoListController : ControllerBase
     {
         // Les données sont en memoire pour évité d'avoir une base de données
-        static int TodoItem_Next_ID = 0;
-        static List<TodoItem> Datas = null;
+        private static int TodoItem_Next_ID = 0;
+        private static List<TodoItem> Datas = null;
 
-        // GET LIST
-        // GET: api/v1/<TodoListController>
-        [HttpGet]
-        public IEnumerable<TodoItem> Get()
+        public TodoListController()
         {
+            // initialisé des données statique de test si besoins
             if (Datas == null)
                 InitialiszeDefaultData();
-
-            return Datas;
         }
 
+        /// <summary>
+        /// Creation de données de test
+        /// </summary>
         private void InitialiszeDefaultData()
         {
             Datas = new List<TodoItem>();
@@ -40,22 +39,32 @@ namespace wsRestTodoList.Controllers
             }
         }
 
-        // READ
-        // GET api/v1/<TodoListController>/5
-        [HttpGet("{id}")]
-        public TodoItem? Get(int id)
+        // GET LIST by GET request with no url arg
+        // GET: api/v1/TodoList/GetTodoItems
+        // OPENAPI OperationId = Name
+        [HttpGet(Name="GetTodoItems")]
+        public IEnumerable<TodoItem> GetTodoItems()
         {
-            if (Datas == null)
-                return null;
+            return Datas;
+        }
 
+        // READ by GET request with url arg for ID
+        // GET api/v1/TodoList/GetTodoItem/5
+        // OPENAPI OperationId = Name
+        // Data in result
+        [HttpGet("GetTodoItem/{id}", Name="GetTodoItem")]
+        public TodoItem? GetTodoItem(int id)
+        {
             TodoItem? data = Datas.FirstOrDefault(item => item.ID == id);
             return data;
         }
 
-        // CREATE
-        // POST api/v1/<TodoListController>
-        [HttpPost]
-        public void Post([FromBody] CreateOrUpdateTodoItem dataToAdd)
+        // CREATE by POST request
+        // POST api/v1/TodoList/CreateTodoItem
+        // OPENAPI OperationId = Name
+        // Data in BODY
+        [HttpPost("CreateTodoItem",Name="CreateTodoItem")]
+        public void CreateTodoItem([FromBody] CreateOrUpdateTodoItem dataToAdd)
         {
             TodoItem_Next_ID++;
             TodoItem data = new TodoItem
@@ -68,10 +77,12 @@ namespace wsRestTodoList.Controllers
             Datas.Add(data);
         }
 
-        // UPDATE
-        // PUT api/<TodoListController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] CreateOrUpdateTodoItem dataToUpdate)
+        // UPDATE by PUT request with url arg for ID
+        // PUT api/TodoList/UpdateTodoItem/5
+        // OPENAPI OperationId = Name
+        // Data in BODY
+        [HttpPut("UpdateTodoItem/{id}", Name = "UpdateTodoItem")]
+        public void UpdateTodoItem(int id, [FromBody] CreateOrUpdateTodoItem dataToUpdate)
         {
             TodoItem? data = Datas.FirstOrDefault(item => item.ID == id);
             if (data != null) 
@@ -81,10 +92,11 @@ namespace wsRestTodoList.Controllers
             }
         }
 
-        // DELETE
-        // DELETE api/<TodoListController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // DELETE by DELETE request with url arg for ID
+        // DELETE api/TodoList>/DeleteTodoItem/5
+        // OPENAPI OperationId = Name
+        [HttpDelete("DeleteTodoItem/{id}", Name = "DeleteTodoItem")]
+        public void DeleteTodoItem(int id)
         {
             TodoItem? data = Datas.FirstOrDefault(item => item.ID == id);
             if (data != null)

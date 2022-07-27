@@ -2,3 +2,11 @@ https://editor.swagger.io/
 le générateur online pour produire du code client.
 faire une test de generation de code
 pour une console
+
+Unchase OpenAPI (Swagger) Connected Service VS2022
+https://marketplace.visualstudio.com/items?itemName=Unchase.unchaseopenapiconnectedservicevs22
+depuis visual studio plugin comme pour WSDL
+
+AutoRest
+permet de gerer du code ,
+mais utilisé avec des services AZURE
