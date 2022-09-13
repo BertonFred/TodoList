@@ -15,6 +15,8 @@
 
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 option csharp_namespace = "GrpcTodoList";
 
 package todo;
@@ -28,7 +30,7 @@ service TodoList
   // Lecture d'un todo item
   rpc GetTodoItem (GetTodoItemRequest) returns (TodoItem);
   // Demande la liste des todo items
-  rpc GetTodoList (GetTodoListRequest) returns (GetTodoListReply);
+  rpc GetTodoList (google.protobuf.Empty) returns (GetTodoListReply);
 }
 
 //
@@ -74,10 +76,10 @@ message GetTodoItemRequest
 // Methode : GetTodoList 
 // Type    : REQUEST
 // Requete de demande de la liste des todo items
-message GetTodoListRequest 
-{
-  string SeachText = 1;
-}
+//$$$message GetTodoListRequest 
+//$$${
+//$$$  string SeachText = 1;
+//$$$}
 
 // Service : TodoList
 // Methode : GetTodoList 

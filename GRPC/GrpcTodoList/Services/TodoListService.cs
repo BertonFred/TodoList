@@ -67,17 +67,17 @@ namespace GrpcTodoList
             {
                 TodoItem? item = Datas.FirstOrDefault(i => i.Id == request.Id);
                 if (item == null)
-                    result = new TodoItem();
+                    result = new TodoItem(); // Non trouvé
                 else
                     result = new TodoItem
                     {
-                                    Id = item.Id,
-                                    Titre = item.Titre,
-                                    Description = item.Description
-                                };
+                        Id = item.Id,
+                        Titre = item.Titre,
+                        Description = item.Description
+                    };
             }
             else
-                result = new TodoItem(); // Todo item vide
+                result = new TodoItem(); // La liste est vide
 
             return Task.FromResult(result);
         }
@@ -88,7 +88,7 @@ namespace GrpcTodoList
         /// <param name="request"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override Task<GetTodoListReply> GetTodoList(GetTodoListRequest request, ServerCallContext context)
+        public override Task<GetTodoListReply> GetTodoList(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         {
             // recherche a faire
 

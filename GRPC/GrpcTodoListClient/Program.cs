@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Grpc.Net.Client;
 using GrpcTodoList;
+using Google.Protobuf.WellKnownTypes;
 
 Stopwatch Watch = new Stopwatch();
 
@@ -62,12 +63,12 @@ Console.WriteLine("--------------------------------");
 Console.WriteLine($"LIST Recuperer la listes des items");
 
 // creer les criteres de la requete
-var requestGetTodoList = new GetTodoListRequest { SeachText="TODO" };
+//$$$var requestGetTodoList = new GetTodoListRequest { SeachText="TODO" };
 
 Console.WriteLine($"Demande de la liste");
 // Lancer la demande de service avec les criteres
 Watch.Restart();
-GetTodoListReply replyGetTodoList = await client.GetTodoListAsync(requestGetTodoList);
+GetTodoListReply replyGetTodoList = await client.GetTodoListAsync(new Empty()) ;
 Watch.Stop();
 Console.WriteLine($"Watch GetTodoListAsync {Watch.ElapsedMilliseconds} ms {Watch.ElapsedTicks} ticks");
 Console.WriteLine($"Lecture des [{replyGetTodoList.Items.Count}] items");

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+// for information on return value : https://medium.com/awesome-net/web-api-return-types-in-net-94715415ae88
 
 namespace wsRestTodoList.Controllers
 {
@@ -53,10 +54,20 @@ namespace wsRestTodoList.Controllers
         // OPENAPI OperationId = Name
         // Data in result
         [HttpGet("GetTodoItem/{id}", Name="GetTodoItem")]
-        public TodoItem? GetTodoItem(int id)
+        [Produces("applicagtion/json")]
+        [ProducesResponseType(400)] // BadRequest
+        [ProducesResponseType(404)] // NotFound
+        [ProducesResponseType(200, Type = typeof(TodoItem))]
+        public ActionResult GetTodoItem(int id)
         {
+            if (id <= 0) 
+                return BadRequest("Id doit être supérieur à 0.");
+
             TodoItem? data = Datas.FirstOrDefault(item => item.ID == id);
-            return data;
+            if (data == null) 
+                return NotFound($"Non trouvé avec l'ID={id}");
+
+            return Ok(data);
         }
 
         // CREATE by POST request
@@ -64,7 +75,9 @@ namespace wsRestTodoList.Controllers
         // OPENAPI OperationId = Name
         // Data in BODY
         [HttpPost("CreateTodoItem",Name="CreateTodoItem")]
-        public void CreateTodoItem([FromBody] CreateOrUpdateTodoItem dataToAdd)
+        [Produces("applicagtion/json")]
+        [ProducesResponseType(200, Type = typeof(TodoItem))]
+        public ActionResult CreateTodoItem([FromBody] CreateOrUpdateTodoItem dataToAdd)
         {
             TodoItem_Next_ID++;
             TodoItem data = new TodoItem
@@ -75,6 +88,8 @@ namespace wsRestTodoList.Controllers
             };
 
             Datas.Add(data);
+
+            return Ok(data);
         }
 
         // UPDATE by PUT request with url arg for ID
