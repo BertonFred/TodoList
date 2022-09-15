@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,14 +11,20 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
-    c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "TODO LIST API",
-        Version = "1.00",
-        Contact = new OpenApiContact { Name = "Fred BERTON", Email = "frederic.Berton@capgemini.com" },
-        Description = "exemple d'API REST avec de la documentation",
-        License = new OpenApiLicense { Name = "LGPL" }
-    }) );
+        c.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "TODO LIST API",
+            Version = "1.00",
+            Contact = new OpenApiContact { Name = "Fred BERTON", Email = "frederic.Berton@capgemini.com" },
+            Description = "exemple d'API REST avec de la documentation",
+            License = new OpenApiLicense { Name = "LGPL" }
+        });
+
+        var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "wsRestTodoList.xml");
+        c.IncludeXmlComments(filePath);
+    }
+) ;
 
 var app = builder.Build();
 

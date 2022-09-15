@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit : https://go.microsoft.com/fwlink/?LinkID=397860
 // for information on return value : https://medium.com/awesome-net/web-api-return-types-in-net-94715415ae88
 // Scott Hanselman. ASP.NET Core RESTful Web API versioning made easy : http://www.hanselman.com/blog/ASPNETCoreRESTfulWebAPIVersioningMadeEasy.aspx
 // ASP.NET Web API Help Pages using Swagger : https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger
-
+// HttpStatusCode Énumération https://docs.microsoft.com/fr-fr/dotnet/api/system.net.httpstatuscode?view=net-6.0
+// Créer la documentation des Web API ASP.NET Core avec Swagger https://rdonfack.developpez.com/tutoriels/documenter-web-api-aspnet-core-swagger/
 namespace wsRestTodoList.Controllers
 {
     [Route("api/v1/[controller]")]
@@ -49,8 +51,8 @@ namespace wsRestTodoList.Controllers
         [HttpGet()]
         [Route("[action]")]
         [Produces("application/json")]
-        [ProducesResponseType(404)] // NotFound
-        [ProducesResponseType(200)] // Success
+        [ProducesResponseType((int)HttpStatusCode.NotFound)] 
+        [ProducesResponseType((int)HttpStatusCode.OK)] 
         public ActionResult<IEnumerable<TodoItem>> GetTodoItems([FromQuery]int pageSize = 10,[FromQuery] int pageIndex = 0)
         {
             if (Datas == null)
@@ -67,12 +69,20 @@ namespace wsRestTodoList.Controllers
         // OPENAPI OperationId = Name
         // Data in result
         //        [HttpGet("GetTodoItem/{id}", Name="GetTodoItem")]
+        /// <summary>
+        /// Retourne un todo item specifique à partir de son id
+        /// </summary>
+        /// <remarks>Je manque d'imagination</remarks>
+        /// <param name="id">id du client a retourné</param>   
+        /// <response code="200">client selectionné</response>
+        /// <response code="404">client introuvable pour l'id specifié</response>
+        /// <response code="500">Oops! le service est indisponible pour le moment</response>
         [HttpGet()]
         [Route("[action]/{id}")]
         [Produces("application/json")]
-        [ProducesResponseType(400)] // BadRequest
-        [ProducesResponseType(404)] // NotFound
-        [ProducesResponseType(200)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)] 
+        [ProducesResponseType((int)HttpStatusCode.NotFound)] 
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         public ActionResult<TodoItem> GetTodoItem(int id)
         {
             if (id <= 0) 
@@ -89,10 +99,11 @@ namespace wsRestTodoList.Controllers
         // POST api/v1/TodoList/CreateTodoItem
         // OPENAPI OperationId = Name
         // Data in BODY
-        [HttpPost("CreateTodoItem",Name="CreateTodoItem")]
+        [HttpPost()]
+        [Route("[action]")]
         [Produces("application/json")]
-        [ProducesResponseType(200, Type = typeof(TodoItem))]
-        public ActionResult CreateTodoItem([FromBody] CreateOrUpdateTodoItem dataToAdd)
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public ActionResult<TodoItem> CreateTodoItem([FromBody] CreateOrUpdateTodoItem dataToAdd)
         {
             TodoItem_Next_ID++;
             TodoItem data = new TodoItem
@@ -111,11 +122,12 @@ namespace wsRestTodoList.Controllers
         // PUT api/TodoList/UpdateTodoItem/5
         // OPENAPI OperationId = Name
         // Data in BODY
-        [HttpPut("UpdateTodoItem/{id}", Name = "UpdateTodoItem")]
+        [HttpPut()]
+        [Route("[action]/{id}")]
         [Produces("application/json")]
-        [ProducesResponseType(400)] // BadRequest
-        [ProducesResponseType(404)] // NotFound
-        [ProducesResponseType(200)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)] 
+        [ProducesResponseType((int)HttpStatusCode.NotFound)] 
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         public ActionResult UpdateTodoItem(int id, [FromBody] CreateOrUpdateTodoItem dataToUpdate)
         {
             if (id <= 0)
@@ -134,11 +146,12 @@ namespace wsRestTodoList.Controllers
         // DELETE by DELETE request with url arg for ID
         // DELETE api/TodoList>/DeleteTodoItem/5
         // OPENAPI OperationId = Name
-        [HttpDelete("DeleteTodoItem/{id}", Name = "DeleteTodoItem")]
+        [HttpDelete()]
+        [Route("[action]/{id}")]
         [Produces("application/json")]
-        [ProducesResponseType(400)] // BadRequest
-        [ProducesResponseType(404)] // NotFound
-        [ProducesResponseType(200)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)] 
+        [ProducesResponseType((int)HttpStatusCode.NotFound)] 
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         public ActionResult DeleteTodoItem(int id)
         {
             if (id <= 0)
