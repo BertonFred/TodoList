@@ -44,10 +44,15 @@ namespace wsRestTodoList.Controllers
             }
         }
 
-        // GET LIST by GET request with no url arg
-        // GET: api/v1/TodoList/GetTodoItems[?pageSize=30&pageIndex=10]
-        // OPENAPI OperationId = Name
-        //[HttpGet(Name="GetTodoItems")]
+        /// <summary>
+        /// READ Liste Todo Item 
+        /// Retourne une liste des todo items avec un gestion de la pagination.
+        /// </summary>
+        /// <remarks>ici une remarque</remarks>
+        /// <param name="pageSize">Taille de la page.</param>   
+        /// <param name="pageIndex">Index du premiere elements dans la page.</param>   
+        /// <response code="200">OK, renvois de la liste demandé.</response>
+        /// <response code="404">Erreur, non trouvé la liste est vide.</response>
         [HttpGet()]
         [Route("[action]")]
         [Produces("application/json")]
@@ -64,19 +69,15 @@ namespace wsRestTodoList.Controllers
             return Ok(datas);
         }
 
-        // READ by GET request with url arg for ID
-        // GET api/v1/TodoList/GetTodoItem/5
-        // OPENAPI OperationId = Name
-        // Data in result
-        //        [HttpGet("GetTodoItem/{id}", Name="GetTodoItem")]
         /// <summary>
-        /// Retourne un todo item specifique à partir de son id
+        /// READ Todo Item
+        /// Retourne un todo item a partir de son identifiant ID
         /// </summary>
-        /// <remarks>Je manque d'imagination</remarks>
-        /// <param name="id">id du client a retourné</param>   
-        /// <response code="200">client selectionné</response>
-        /// <response code="404">client introuvable pour l'id specifié</response>
-        /// <response code="500">Oops! le service est indisponible pour le moment</response>
+        /// <remarks>ici une remarque</remarks>
+        /// <param name="id">id du todo item doit être supérieur à 0.</param>   
+        /// <response code="200">OK, le todo item est retourné.</response>
+        /// <response code="400">Mauvaise requete, id non invalide.</response>
+        /// <response code="404">Erreur, le todo item n'est pas trouvé a partir de l'id spécifié.</response>
         [HttpGet()]
         [Route("[action]/{id}")]
         [Produces("application/json")]
