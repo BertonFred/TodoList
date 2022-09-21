@@ -1,22 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-// For more information on enabling Web API for empty projects, visit : https://go.microsoft.com/fwlink/?LinkID=397860
 // for information on return value : https://medium.com/awesome-net/web-api-return-types-in-net-94715415ae88
 // Scott Hanselman. ASP.NET Core RESTful Web API versioning made easy : http://www.hanselman.com/blog/ASPNETCoreRESTfulWebAPIVersioningMadeEasy.aspx
 // ASP.NET Web API Help Pages using Swagger : https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger
-// HttpStatusCode Énumération https://docs.microsoft.com/fr-fr/dotnet/api/system.net.httpstatuscode?view=net-6.0
+// Data annotations for help : https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-6.0&tabs=visual-studio// HttpStatusCode Énumération https://docs.microsoft.com/fr-fr/dotnet/api/system.net.httpstatuscode?view=net-6.0
+// Data annotations attributes : https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-6.0
 // Créer la documentation des Web API ASP.NET Core avec Swagger https://rdonfack.developpez.com/tutoriels/documenter-web-api-aspnet-core-swagger/
+// Analyseur de parametrage : https://learn.microsoft.com/en-us/aspnet/core/web-api/advanced/analyzers?view=aspnetcore-6.0
+// action asynchrone : https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-6.0
 namespace wsRestTodoList.Controllers
 {
+    /// <summary>
+    /// Web service Todo List 
+    /// </summary>
     [Route("api/v1/[controller]")]
     [ApiController]
     public class TodoListController : ControllerBase
     {
         // Les données sont en memoire pour évité d'avoir une base de données
-        private static int TodoItem_Next_ID = 0;
-        private static List<TodoItem> Datas = null;
+        private static int TodoItem_Next_ID = 0; // Générateur de numero unique
+        private static List<TodoItem> Datas = null; // Liste des données
 
+        /// <summary>
+        /// Constructeur
+        /// Assure l'initialisation des données de test
+        /// </summary>
         public TodoListController()
         {
             // initialisé des données statique de test si besoins
@@ -56,8 +65,8 @@ namespace wsRestTodoList.Controllers
         [HttpGet()]
         [Route("[action]")]
         [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)] 
-        [ProducesResponseType((int)HttpStatusCode.OK)] 
         public ActionResult<IEnumerable<TodoItem>> GetTodoItems([FromQuery]int pageSize = 10,[FromQuery] int pageIndex = 0)
         {
             if (Datas == null)
@@ -81,9 +90,9 @@ namespace wsRestTodoList.Controllers
         [HttpGet()]
         [Route("[action]/{id}")]
         [Produces("application/json")]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)] 
-        [ProducesResponseType((int)HttpStatusCode.NotFound)] 
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+        [ProducesResponseType(StatusCodes.Status404NotFound)] 
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<TodoItem> GetTodoItem(int id)
         {
             if (id <= 0) 
@@ -96,10 +105,13 @@ namespace wsRestTodoList.Controllers
             return Ok(data);
         }
 
-        // CREATE by POST request
-        // POST api/v1/TodoList/CreateTodoItem
-        // OPENAPI OperationId = Name
-        // Data in BODY
+        /// <summary>
+        /// CREATE Todo Item
+        /// Creation d'un todo items dans la listes des todo items
+        /// </summary>
+        /// <remarks>ici une remarque</remarks>
+        /// <param name="dataToAdd">Données du todo item a ajouter.</param>   
+        /// <response code="200">OK, le todo item est retourné.</response>
         [HttpPost()]
         [Route("[action]")]
         [Produces("application/json")]
@@ -119,16 +131,23 @@ namespace wsRestTodoList.Controllers
             return Ok(data);
         }
 
-        // UPDATE by PUT request with url arg for ID
-        // PUT api/TodoList/UpdateTodoItem/5
-        // OPENAPI OperationId = Name
-        // Data in BODY
+        /// <summary>
+        /// UPDATE Todo Item
+        /// Mise a jour d'un Todo item dans la liste des Todo items.
+        /// La mise a jour est reéalisé à partir de l'ID
+        /// </summary>
+        /// <remarks>ici une remarque</remarks>
+        /// <param name="id">id du todo item doit être supérieur à 0.</param>   
+        /// <param name="dataToUpdate">Données du todo item a mettre a jour.</param>   
+        /// <response code="200">OK, le todo item est mise a jour.</response>
+        /// <response code="400">Mauvaise requete, id non invalide.</response>
+        /// <response code="404">Erreur, le todo item n'est pas trouvé a partir de l'id spécifié.</response>
         [HttpPut()]
         [Route("[action]/{id}")]
         [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)] 
         [ProducesResponseType((int)HttpStatusCode.NotFound)] 
-        [ProducesResponseType((int)HttpStatusCode.OK)]
         public ActionResult UpdateTodoItem(int id, [FromBody] CreateOrUpdateTodoItem dataToUpdate)
         {
             if (id <= 0)
@@ -144,15 +163,20 @@ namespace wsRestTodoList.Controllers
             return Ok();
         }
 
-        // DELETE by DELETE request with url arg for ID
-        // DELETE api/TodoList>/DeleteTodoItem/5
-        // OPENAPI OperationId = Name
+        /// <summary>
+        /// DELETE Todo Item
+        /// Supprimer un todo item a partir de son identifiant ID
+        /// </summary>
+        /// <param name="id">id du todo item doit être supérieur à 0.</param>   
+        /// <response code="200">OK, le todo item est supprimé.</response>
+        /// <response code="400">Mauvaise requete, id non invalide.</response>
+        /// <response code="404">Erreur, le todo item n'est pas trouvé a partir de l'id spécifié.</response>
         [HttpDelete()]
         [Route("[action]/{id}")]
         [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)] 
         [ProducesResponseType((int)HttpStatusCode.NotFound)] 
-        [ProducesResponseType((int)HttpStatusCode.OK)]
         public ActionResult DeleteTodoItem(int id)
         {
             if (id <= 0)
