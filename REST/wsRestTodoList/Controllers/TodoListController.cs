@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 
 // for information on return value : https://medium.com/awesome-net/web-api-return-types-in-net-94715415ae88
 // Scott Hanselman. ASP.NET Core RESTful Web API versioning made easy : http://www.hanselman.com/blog/ASPNETCoreRESTfulWebAPIVersioningMadeEasy.aspx
@@ -9,10 +9,17 @@ using System.Net;
 // Créer la documentation des Web API ASP.NET Core avec Swagger https://rdonfack.developpez.com/tutoriels/documenter-web-api-aspnet-core-swagger/
 // Analyseur de parametrage : https://learn.microsoft.com/en-us/aspnet/core/web-api/advanced/analyzers?view=aspnetcore-6.0
 // action asynchrone : https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-6.0
+// Activer le support de Path partiel d'objet : https://learn.microsoft.com/fr-fr/aspnet/core/web-api/jsonpatch?view=aspnetcore-6.0
+// avec le nuget : Microsoft.AspNetCore.JsonPatch
+// le jsonpatch est décodée par : t Microsoft.AspNetCore.Mvc.NewtonsoftJson
+// article JSON Patch With ASP.NET Core : https://dotnetcoretutorials.com/2017/11/29/json-patch-asp-net-core/
+
 namespace wsRestTodoList.Controllers
 {
     /// <summary>
     /// Web service Todo List 
+    /// Ici on assure le routage vers une URL qui contiendra la dénomination : /api/v1/ et le nom du controleur 
+    /// comme d'habitude .NET prendra le soin de supprimer tout seul le texte "Controller" sur le nom du service.
     /// </summary>
     [Route("api/v1/[controller]")]
     [ApiController]
@@ -188,5 +195,51 @@ namespace wsRestTodoList.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// PATCH Todo Item
+        /// Mettre a jour partiellement un todo item a partir de son identifiant ID
+        /// </summary>
+        /// <remarks>
+        /// Documentation sur le format des patch : https://www.rfc-editor.org/rfc/rfc6902
+        /// Tutorial rapide : https://dotnetcoretutorials.com/2017/11/29/json-patch-asp-net-core/
+        /// Exemple :<br/>
+        ///   mise à jour d'un attribut :  [ { "op": "replace", "path": "/Titre", "value": "modif du tire sur id=1" } ]<br/>
+        ///   mise à jour d'un attribut vers null: [ { "op": "remove", "path": "/Titre" } ]<br/>
+        /// </remarks>
+        /// <param name="id">id du todo item doit être supérieur à 0.</param>   
+        /// <param name="patchDoc">Document JSon de déclaration des demandes de patch (modification partielle) d'un objet.</param>   
+        /// <response code="200">OK, le todo item est supprimé.</response>
+        /// <response code="400">Mauvaise requete, id non invalide.</response>
+        /// <response code="404">Erreur, le todo item n'est pas trouvé a partir de l'id spécifié.</response>
+        [HttpPatch()]
+        [Route("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult PatchTodoItem(int id,[FromBody] JsonPatchDocument<TodoItem> patchDoc)
+        {
+            // Controle des données d'entrée
+            if (id <= 0)
+                return BadRequest("Id doit être supérieur à 0.");
+
+            TodoItem? data = Datas.FirstOrDefault(item => item.ID == id);
+            if (data == null)
+                return NotFound($"Non trouvé avec l'ID = {id}");
+
+            if (patchDoc == null)
+                return BadRequest(ModelState);
+
+            // Execution du traitement
+            patchDoc.ApplyTo(data);
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok();
+        }
+
     }
 }
