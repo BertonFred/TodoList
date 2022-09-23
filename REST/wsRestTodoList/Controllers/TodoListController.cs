@@ -63,7 +63,6 @@ namespace wsRestTodoList.Controllers
         /// <response code="200">OK, renvois de la liste demandé.</response>
         /// <response code="404">Erreur, non trouvé la liste est vide.</response>
         [HttpGet()]
-        [Route("[action]")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)] 
@@ -88,7 +87,7 @@ namespace wsRestTodoList.Controllers
         /// <response code="400">Mauvaise requete, id non invalide.</response>
         /// <response code="404">Erreur, le todo item n'est pas trouvé a partir de l'id spécifié.</response>
         [HttpGet()]
-        [Route("[action]/{id}")]
+        [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
         [ProducesResponseType(StatusCodes.Status404NotFound)] 
@@ -113,7 +112,6 @@ namespace wsRestTodoList.Controllers
         /// <param name="dataToAdd">Données du todo item a ajouter.</param>   
         /// <response code="200">OK, le todo item est retourné.</response>
         [HttpPost()]
-        [Route("[action]")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<TodoItem> CreateTodoItem([FromBody] CreateOrUpdateTodoItem dataToAdd)
@@ -143,7 +141,7 @@ namespace wsRestTodoList.Controllers
         /// <response code="400">Mauvaise requete, id non invalide.</response>
         /// <response code="404">Erreur, le todo item n'est pas trouvé a partir de l'id spécifié.</response>
         [HttpPut()]
-        [Route("[action]/{id}")]
+        [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
@@ -172,7 +170,7 @@ namespace wsRestTodoList.Controllers
         /// <response code="400">Mauvaise requete, id non invalide.</response>
         /// <response code="404">Erreur, le todo item n'est pas trouvé a partir de l'id spécifié.</response>
         [HttpDelete()]
-        [Route("[action]/{id}")]
+        [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
