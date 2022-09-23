@@ -65,8 +65,8 @@ namespace wsRestTodoList.Controllers
         [HttpGet()]
         [Route("[action]")]
         [Produces("application/json")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)] 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)] 
         public ActionResult<IEnumerable<TodoItem>> GetTodoItems([FromQuery]int pageSize = 10,[FromQuery] int pageIndex = 0)
         {
             if (Datas == null)
@@ -115,7 +115,7 @@ namespace wsRestTodoList.Controllers
         [HttpPost()]
         [Route("[action]")]
         [Produces("application/json")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<TodoItem> CreateTodoItem([FromBody] CreateOrUpdateTodoItem dataToAdd)
         {
             TodoItem_Next_ID++;
@@ -145,9 +145,9 @@ namespace wsRestTodoList.Controllers
         [HttpPut()]
         [Route("[action]/{id}")]
         [Produces("application/json")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)] 
-        [ProducesResponseType((int)HttpStatusCode.NotFound)] 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+        [ProducesResponseType(StatusCodes.Status404NotFound)] 
         public ActionResult UpdateTodoItem(int id, [FromBody] CreateOrUpdateTodoItem dataToUpdate)
         {
             if (id <= 0)
@@ -174,9 +174,9 @@ namespace wsRestTodoList.Controllers
         [HttpDelete()]
         [Route("[action]/{id}")]
         [Produces("application/json")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)] 
-        [ProducesResponseType((int)HttpStatusCode.NotFound)] 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteTodoItem(int id)
         {
             if (id <= 0)
