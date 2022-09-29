@@ -6,10 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 // ASP.NET Web API Help Pages using Swagger : https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger
 // Data annotations for help : https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-6.0&tabs=visual-studio// HttpStatusCode Énumération https://docs.microsoft.com/fr-fr/dotnet/api/system.net.httpstatuscode?view=net-6.0
 // Data annotations attributes : https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-6.0
+// data annotation : https://learn.microsoft.com/en-us/aspnet/web-api/overview/formats-and-model-binding/model-validation-in-aspnet-web-api?source=recommendations
+// data validation : https://code-maze.com/aspnetcore-modelstate-validation-web-api/
 // Créer la documentation des Web API ASP.NET Core avec Swagger https://rdonfack.developpez.com/tutoriels/documenter-web-api-aspnet-core-swagger/
-// Analyseur de parametrage : https://learn.microsoft.com/en-us/aspnet/core/web-api/advanced/analyzers?view=aspnetcore-6.0
+// Analyseur de valeur de retour : https://learn.microsoft.com/en-us/aspnet/core/web-api/advanced/analyzers?view=aspnetcore-6.0
 // action asynchrone : https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-6.0
-// Activer le support de Path partiel d'objet : https://learn.microsoft.com/fr-fr/aspnet/core/web-api/jsonpatch?view=aspnetcore-6.0
+// Api controller documentation : https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-6.0#apicontroller-attribute
+
+// Activer le support update partiel d'objet : https://learn.microsoft.com/fr-fr/aspnet/core/web-api/jsonpatch?view=aspnetcore-6.0
 // avec le nuget : Microsoft.AspNetCore.JsonPatch
 // le jsonpatch est décodée par : t Microsoft.AspNetCore.Mvc.NewtonsoftJson
 // article JSON Patch With ASP.NET Core : https://dotnetcoretutorials.com/2017/11/29/json-patch-asp-net-core/
@@ -19,7 +23,9 @@ namespace wsRestTodoList.Controllers
     /// <summary>
     /// Web service Todo List 
     /// Ici on assure le routage vers une URL qui contiendra la dénomination : /api/v1/ et le nom du controleur 
-    /// comme d'habitude .NET prendra le soin de supprimer tout seul le texte "Controller" sur le nom du service.
+    /// comme d'habitude .NET prendra le soin de supprimer tout seul le texte "Controller" sur le nom du service
+    /// 
+    /// ApiController : action des controle d'erreur
     /// </summary>
     [Route("api/v1/[controller]")]
     [ApiController]

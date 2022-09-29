@@ -12,6 +12,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
     {
         options.InputFormatters.Insert(0, MyJsonPatchInputFormatter.GetJsonPatchInputFormatter());
+    })
+    .ConfigureApiBehaviorOptions(options=>
+    {
+        // To preserve the default behavior, capture the original delegate to call later.
+        var builtInFactory = options.InvalidModelStateResponseFactory;
+
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var logger = context.HttpContext.RequestServices
+                                .GetRequiredService<ILogger<Program>>();
+            // ici on peut utiliser  : context.ModelState
+            // pour l'erreur courante
+            // Perform logging here.
+            // ...
+
+            // Invoke the default behavior, which produces a ValidationProblemDetails
+            // response.
+            // To produce a custom response, return a different implementation of 
+            // IActionResult instead.
+            return builtInFactory(context);
+        };
     });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -27,6 +48,7 @@ builder.Services.AddSwaggerGen(c =>
             License = new OpenApiLicense { Name = "LGPL" }
         });
 
+        // activé la documentation via le fichier xml généré a partir des commentaires
         var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "wsRestTodoList.xml");
         c.IncludeXmlComments(filePath);
     }
