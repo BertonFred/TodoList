@@ -1,0 +1,3 @@
+obj\Debug\net6.0\Protos/Todo.cs \
+obj\Debug\net6.0\Protos/TodoGrpc.cs: C:/Users/fberton/.nuget/packages/grpc.tools/2.48.1/build/native/include/google/protobuf/empty.proto\
+ Protos/Todo.proto

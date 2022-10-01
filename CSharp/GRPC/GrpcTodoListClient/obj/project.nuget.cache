@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "anu1x74PB1jL+dhrJoqOSaaN6p3TqAwibBvgNhvkTMlu+i6fM3QT3/SrExVwLkzm877hsjQ5q+jBa2IQ32Jw+A==",
+  "success": true,
+  "projectFilePath": "C:\\0020-Projets\\GrpcRestTodoList\\GRPC\\GrpcTodoListClient\\GrpcTodoListClient.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\fberton\\.nuget\\packages\\google.protobuf\\3.21.6\\google.protobuf.3.21.6.nupkg.sha512",
+    "C:\\Users\\fberton\\.nuget\\packages\\grpc.core.api\\2.48.0\\grpc.core.api.2.48.0.nupkg.sha512",
+    "C:\\Users\\fberton\\.nuget\\packages\\grpc.net.client\\2.48.0\\grpc.net.client.2.48.0.nupkg.sha512",
+    "C:\\Users\\fberton\\.nuget\\packages\\grpc.net.common\\2.48.0\\grpc.net.common.2.48.0.nupkg.sha512",
+    "C:\\Users\\fberton\\.nuget\\packages\\grpc.tools\\2.48.1\\grpc.tools.2.48.1.nupkg.sha512",
+    "C:\\Users\\fberton\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\3.0.3\\microsoft.extensions.logging.abstractions.3.0.3.nupkg.sha512",
+    "C:\\Users\\fberton\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+  ],
+  "logs": []
+}

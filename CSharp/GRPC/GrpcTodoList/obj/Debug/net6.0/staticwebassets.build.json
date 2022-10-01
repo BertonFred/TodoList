@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "e2aXcPS495OJQ+I76fan2tHt+BQC5cKJI6eS0sZ44PE=",
+  "Source": "GrpcTodoList",
+  "BasePath": "_content/GrpcTodoList",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

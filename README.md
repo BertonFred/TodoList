@@ -1,14 +1,15 @@
-#Exemples de web services avec des implementations dans les differents langages
+# Exemples de services avec des implementations dans les differents langages
 
-Le titre du repository, est donc bien mal choisi...
+Nous présentons  ici des implémentation de references pour des services.
+Les service sont implentée avec differents langages, et different paradigme de distributuion.
 
-Exemple de Web services bien formé avec differents langage.
-Le but est de présenté les bests practices en fonction des langages et des frameworks.
-Les web services doivent être conforme à la norme RESTFull
-et fournir une documentation complete en OpenAPI.z
+# Csharp : Contient les implentation en langage : C#
+2. REST
+1. GRPC
 
-#TODO
-* Test de performance entre GRPC et WebService
-* Implementation Java Restfull
-* Implementation Java gRPC
+# Java : Contient les implentation en langage : JAVA
+2. REST
+1. GRPC
+
+
 
