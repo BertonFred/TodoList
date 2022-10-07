@@ -15,9 +15,14 @@ using Microsoft.AspNetCore.Mvc;
 
 // Activer le support update partiel d'objet : https://learn.microsoft.com/fr-fr/aspnet/core/web-api/jsonpatch?view=aspnetcore-6.0
 // avec le nuget : Microsoft.AspNetCore.JsonPatch
-// le jsonpatch est décodée par : t Microsoft.AspNetCore.Mvc.NewtonsoftJson
+// le jsonpatch est décodée par : Microsoft.AspNetCore.Mvc.NewtonsoftJson
 // article JSON Patch With ASP.NET Core : https://dotnetcoretutorials.com/2017/11/29/json-patch-asp-net-core/
-
+//
+// Surveillance intégré applicative
+// hebergement et supervision applicative / Contrôles d’intégrité (builder.Services.AddHealthChecks() :
+// https://learn.microsoft.com/fr-fr/aspnet/core/host-and-deploy/health-checks?view=aspnetcore-6.0
+// Surveillance de l’intégrité: https://learn.microsoft.com/fr-fr/dotnet/architecture/microservices/implement-resilient-applications/monitor-app-health?source=recommendations
+// HealthCheck UI : AspNetCore.HealthChecks.UI
 namespace wsRestTodoList.Controllers
 {
     /// <summary>

@@ -6,8 +6,18 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using wsRestTodoList;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using wsRestTodoList.HealthCheck;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Ajouter un point de HealthChecks pour faciliter la surveillance de l'application par les OPS
+// ici on fait un appel àServiceOneCheck en passant la valeur de retour du healthCheck (pour faire simple)
+builder.Services.AddHealthChecks()
+                .AddTypeActivatedCheck<ServiceOneHealthCheck>("RestTodoListHealthCheckOne", args: new object[] { HealthStatus.Healthy })
+                .AddTypeActivatedCheck<ServiceOneHealthCheck>("RestTodoListHealthCheckTwo", args: new object[] { HealthStatus.Healthy })
+                .AddCheck("Lambda Check",() => HealthCheckResult.Healthy("Lambda Check."));
+// $$$ builder.Services.AddHealthChecksUI();
 
 // Add services to the container.
 // ajout du formateur newtonsoft pour la gestion de l'API PATCH
@@ -51,7 +61,6 @@ builder.Services.AddSwaggerGen(c =>
             License = new OpenApiLicense { Name = "LGPL" }
         });
 
-        // activé la documentation via le fichier xml généré a partir des commentaires
         var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "wsRestTodoList.xml");
         c.IncludeXmlComments(filePath);
     }
@@ -65,6 +74,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// ajouter le point de HealthCheck pour la supervision application du SI.
+app.MapHealthChecks("/healthz");
+// $$$ app.UseHealthChecksUI();
 
 app.UseAuthorization();
 app.MapControllers();
