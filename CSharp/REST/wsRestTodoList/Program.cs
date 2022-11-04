@@ -69,6 +69,9 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+// Dans l'exemple ici nous activons le service de docuemntation Swagger uniquement si l'environnement
+// d'execution est un environnement de developpement
+// Ce qui n'est pas toujours une bonne idée. Regulierment on active Swagger dans tous les environnement Dev ou pas.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
