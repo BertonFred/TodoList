@@ -11,5 +11,3 @@ Les Web services sont implentées avec differents langages.
 2. REST
 1. GRPC
 
-
-
