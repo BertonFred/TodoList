@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Mvc;
 // https://learn.microsoft.com/fr-fr/aspnet/core/host-and-deploy/health-checks?view=aspnetcore-6.0
 // Surveillance de l’intégrité: https://learn.microsoft.com/fr-fr/dotnet/architecture/microservices/implement-resilient-applications/monitor-app-health?source=recommendations
 // HealthCheck UI : AspNetCore.HealthChecks.UI
+// explication sur les methodes de retour Createxxx https://ochzhen.com/blog/created-createdataction-createdatroute-methods-explained-aspnet-core#createdataction-explained
 namespace wsRestTodoList.Controllers
 {
     /// <summary>
@@ -131,9 +132,15 @@ namespace wsRestTodoList.Controllers
         /// <response code="200">OK, le todo item est retourné.</response>
         [HttpPost()]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public ActionResult<TodoItem> CreateTodoItem([FromBody] CreateOrUpdateTodoItem dataToAdd)
         {
+            // Verifier les données
+            if (string.IsNullOrEmpty(dataToAdd.Titre) == true)
+                return BadRequest();
+
             TodoItem_Next_ID++;
             TodoItem data = new TodoItem
             {
@@ -142,9 +149,13 @@ namespace wsRestTodoList.Controllers
                 Description = dataToAdd.Description
             };
 
+            // test fake, mais c'est l'idée
+            if (Datas.Find(item => item.ID == data.ID) != null)
+                return Conflict();
+
             Datas.Add(data);
 
-            return Ok(data);
+            return CreatedAtAction(nameof(GetTodoItem), new { id = data.ID }, data);
         }
 
         /// <summary>
