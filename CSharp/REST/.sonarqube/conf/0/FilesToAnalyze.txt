@@ -1,0 +1,13 @@
+﻿C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\Controllers\TodoListController.cs
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\Datas\CreateOrUpdateTodoItem.cs
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\Datas\TodoItem.cs
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\HealthCheck\ServiceOneHealthCheck.cs
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\NewtonsoftJsonPatchInputFormatter.cs
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\Program.cs
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\obj\Debug\net6.0\wsRestTodoList.GlobalUsings.g.cs
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\obj\Debug\net6.0\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\obj\Debug\net6.0\wsRestTodoList.AssemblyInfo.cs
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\obj\Debug\net6.0\wsRestTodoList.MvcApplicationPartsAssemblyInfo.cs
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\appsettings.Development.json
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\appsettings.json
+C:\0020-Projets\TodoList\CSharp\REST\wsRestTodoList\Properties\launchSettings.json
