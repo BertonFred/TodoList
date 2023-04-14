@@ -33,7 +33,8 @@ namespace wsRestTodoList.Controllers
     /// 
     /// ApiController : action des controle d'erreur
     /// </summary>
-    [Route("api/v1/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class TodoListController : ControllerBase
     {
