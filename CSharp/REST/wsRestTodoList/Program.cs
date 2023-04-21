@@ -21,11 +21,12 @@ builder.Services.AddHealthChecks()
 
 // Add services to the container.
 // ajout du formateur newtonsoft pour la gestion de l'API PATCH
+builder.Services.AddControllers();
 builder.Services.AddControllers(options =>
     {
         options.InputFormatters.Insert(0, MyJsonPatchInputFormatter.GetJsonPatchInputFormatter());
     })
-    .ConfigureApiBehaviorOptions(options=>
+    .ConfigureApiBehaviorOptions(options =>
     {
         // To preserve the default behavior, capture the original delegate to call later.
         var builtInFactory = options.InvalidModelStateResponseFactory;
@@ -50,16 +51,27 @@ builder.Services.AddControllers(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+// Versionning
+// https://medium.com/@ravindradevrani/api-versioning-in-net-core-net-7-2eab5142f5a0
+// https://github.com/dotnet/aspnet-api-versioning/wiki/API-Versioning-Options
+// https://github.com/dotnet/aspnet-api-versioning/wiki
+builder.Services.AddApiVersioning(optVersion =>
+{
+    optVersion.DefaultApiVersion = new ApiVersion(1, 1);
+    optVersion.ReportApiVersions = true;
+});
+
 builder.Services.AddSwaggerGen(c =>
     {
-        c.SwaggerDoc("v1", new OpenApiInfo
-        {
-            Title = "TODO LIST API",
-            Version = "1.00",
-            Contact = new OpenApiContact { Name = "Fred BERTON", Email = "frederic.Berton@capgemini.com" },
-            Description = "exemple d'API REST avec de la documentation",
-            License = new OpenApiLicense { Name = "LGPL" }
-        });
+        //c.SwaggerDoc("v1", new OpenApiInfo
+        //{
+        //    Title = "TODO LIST API",
+        //    Version = "9.99",
+        //    Contact = new OpenApiContact { Name = "Fred BERTON", Email = "frederic.Berton@capgemini.com" },
+        //    Description = "exemple d'API REST avec de la documentation",
+        //    License = new OpenApiLicense { Name = "LGPL" }
+        //});
 
         var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "wsRestTodoList.xml");
         c.IncludeXmlComments(filePath);
