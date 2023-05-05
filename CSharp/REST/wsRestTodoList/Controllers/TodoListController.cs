@@ -99,7 +99,7 @@ namespace wsRestTodoList.Controllers
         }
 
         /// <summary>
-        /// READ Todo Item
+        /// Lecture d'un Todo Item
         /// Retourne un todo item a partir de son identifiant ID
         /// </summary>
         /// <remarks>ici une remarque</remarks>

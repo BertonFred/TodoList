@@ -75,6 +75,7 @@ builder.Services.AddSwaggerGen(c =>
 
         var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "wsRestTodoList.xml");
         c.IncludeXmlComments(filePath);
+        c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
     }
 ) ;
 
