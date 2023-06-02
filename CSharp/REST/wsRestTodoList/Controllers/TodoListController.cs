@@ -44,11 +44,19 @@ namespace wsRestTodoList.Controllers
         private static List<TodoItem> Datas = null; // Liste des données
 
         /// <summary>
+        /// Service de log injecté par le constructeur
+        /// </summary>
+        private readonly ILogger logger;
+
+        /// <summary>
         /// Constructeur
         /// Assure l'initialisation des données de test
         /// </summary>
-        public TodoListController()
+        public TodoListController(ILogger<TodoListController> _logger)
         {
+            logger = _logger;
+            logger.LogInformation("CTOR");
+
             // initialisé des données statique de test si besoins
             if (Datas == null)
                 InitialiszeDefaultData();
@@ -59,6 +67,8 @@ namespace wsRestTodoList.Controllers
         /// </summary>
         private void InitialiszeDefaultData()
         {
+            logger.LogInformation("InitialiszeDefaultData enter");
+
             Datas = new List<TodoItem>();
             int iNbItemToCreate = 5;
             for (int i = 1; i < iNbItemToCreate; i++)
@@ -72,6 +82,8 @@ namespace wsRestTodoList.Controllers
                 };
                 Datas.Add(data);
             }
+
+            logger.LogInformation("InitialiszeDefaultData leave");
         }
 
         /// <summary>
@@ -89,12 +101,17 @@ namespace wsRestTodoList.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)] 
         public ActionResult<IEnumerable<TodoItem>> GetTodoItems([FromQuery]int pageSize = 10,[FromQuery] int pageIndex = 0)
         {
+            logger.LogInformation("GetTodoItems enter");
+
             if (Datas == null)
                 return NotFound($"Pas de données dans la liste");
 
             List<TodoItem> datas = Datas.Skip(pageSize * pageIndex)
                                         .Take(pageSize)
                                         .ToList();
+            
+            logger.LogInformation("GetTodoItems leave");
+
             return Ok(datas);
         }
 

@@ -17,7 +17,15 @@ builder.Services.AddHealthChecks()
                 .AddTypeActivatedCheck<ServiceOneHealthCheck>("RestTodoListHealthCheckOne", args: new object[] { HealthStatus.Healthy })
                 .AddTypeActivatedCheck<ServiceOneHealthCheck>("RestTodoListHealthCheckTwo", args: new object[] { HealthStatus.Healthy })
                 .AddCheck("Lambda Check",() => HealthCheckResult.Healthy("Lambda Check."));
-// $$$ builder.Services.AddHealthChecksUI();
+//builder.Services.AddHealthChecksUI();
+builder.Services.AddHealthChecksUI(options =>
+{
+    options.SetEvaluationTimeInSeconds(5);
+    options.MaximumHistoryEntriesPerEndpoint(10);
+    //options.AddHealthCheckEndpoint("API com Health Checks", "/healthz");
+    //options.AddHealthCheckEndpoint("API2 com Health Checks", "/healthz");
+})
+.AddInMemoryStorage(); 
 
 // Add services to the container.
 // ajout du formateur newtonsoft pour la gestion de l'API PATCH
@@ -80,6 +88,7 @@ builder.Services.AddSwaggerGen(c =>
 ) ;
 
 var app = builder.Build();
+app.Logger.LogInformation("Démarrage du Web services");
 
 // Configure the HTTP request pipeline.
 // Dans l'exemple ici nous activons le service de docuemntation Swagger uniquement si l'environnement
@@ -93,7 +102,7 @@ if (app.Environment.IsDevelopment())
 
 // ajouter le point de HealthCheck pour la supervision application du SI.
 app.MapHealthChecks("/healthz");
-// $$$ app.UseHealthChecksUI();
+app.UseHealthChecksUI();
 
 app.UseAuthorization();
 app.MapControllers();
