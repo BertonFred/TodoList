@@ -11,19 +11,37 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// controle de HealthChecks simple 
+// pour faire un check utilisez : http://localhost:5279/healthz
+//builder.Services.AddHealthChecks();
+
+// controle de HealthChecks avec des providers, ici la bdd
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddHealthChecks()
+                .AddSqlServer(connectionString);
+
+// controle de HealthChecks avec developpement specifique
 // Ajouter un point de HealthChecks pour faciliter la surveillance de l'application par les OPS
-// ici on fait un appel ‡ServiceOneCheck en passant la valeur de retour du healthCheck (pour faire simple)
+// ici on fait un appel ‡ ServiceOneCheck en passant la valeur de retour du healthCheck (pour faire simple)
+/*
+ * avec extension specifique
+bool bValeurATesterDansLeHealthCheck = true;
 builder.Services.AddHealthChecks()
                 .AddTypeActivatedCheck<ServiceOneHealthCheck>("RestTodoListHealthCheckOne", args: new object[] { HealthStatus.Healthy })
                 .AddTypeActivatedCheck<ServiceOneHealthCheck>("RestTodoListHealthCheckTwo", args: new object[] { HealthStatus.Healthy })
-                .AddCheck("Lambda Check",() => HealthCheckResult.Healthy("Lambda Check."));
-//builder.Services.AddHealthChecksUI();
+                .AddCheck("Lambda Check",() => 
+                    (bValeurATesterDansLeHealthCheck == true) ? HealthCheckResult.Healthy("Lambda Check.") : HealthCheckResult.Unhealthy("Lambda Check.") );
+*/
+
+
+
+// Activation de healthcheck ui
+// url de consultation : http://localhost:5279/healthchecks-ui#/healthchecks
 builder.Services.AddHealthChecksUI(options =>
 {
     options.SetEvaluationTimeInSeconds(5);
     options.MaximumHistoryEntriesPerEndpoint(10);
-    //options.AddHealthCheckEndpoint("API com Health Checks", "/healthz");
-    //options.AddHealthCheckEndpoint("API2 com Health Checks", "/healthz");
+    options.AddHealthCheckEndpoint("FRED", "/healthz");
 })
 .AddInMemoryStorage(); 
 
